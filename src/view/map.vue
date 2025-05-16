@@ -1,8 +1,8 @@
 <template>
   <l-map id="map" :zoom="zoom" :center="center" @click="addMarker">
 
-    <l-marker v-for="(marker,i) in markerList" :key="i" :lat-lng="marker" @click="() => removeMarker(marker['.key'])"></l-marker>
-    
+    <l-marker v-for="(marker,i) in markerList" :key="i" :lat-lng="marker" :icon="carIcon" @click="() => removeMarker(marker['.key'])"></l-marker>
+
     <l-tile-layer :url="url"></l-tile-layer>
     
     <l-control v-if="!locating">
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { LMap, LTileLayer, LMarker, LControl } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker, LControl, LIcon } from "vue2-leaflet";
 
 export default {
   name: "myMap",
@@ -23,6 +23,12 @@ export default {
     };
   },
   data() {
+    const carIcon = new LIcon({
+      iconUrl: require('@/assets/car-icon.png'),
+      iconSize: [32, 32], // Adjust size as needed
+      iconAnchor: [16, 32] // Adjust anchor as needed
+    });
+
     return {
       markerList: [],
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
@@ -30,12 +36,13 @@ export default {
       center: [47.472092, -0.550589],
       locating: false
     };
+
   },
   components: {
     LMap,
     LTileLayer,
     LMarker,
-    LControl
+ LControl
   },
   methods: {
     addMarker(position) {
@@ -72,3 +79,4 @@ export default {
   width: 100%;
 }
 </style>
+
